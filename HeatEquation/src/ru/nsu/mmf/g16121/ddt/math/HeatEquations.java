@@ -6,11 +6,6 @@ import java.io.PrintWriter;
 import static ru.nsu.mmf.g16121.ddt.main.Main.*;
 
 public class HeatEquations {
-    private static final double leftBound = 0;
-    private static final double rightBound = 1;
-
-    private static final int NUMBERS_COUNT_OF_GRID_BY_X = 500;
-    private static final int NUMBERS_COUNT_OF_GRID_BY_T = 500;
 
     private static final double stepX = (rightBound - leftBound) / NUMBERS_COUNT_OF_GRID_BY_X;
     private static final double stepT = (rightBound - leftBound) / NUMBERS_COUNT_OF_GRID_BY_T;
@@ -52,12 +47,12 @@ public class HeatEquations {
     }
 
     /**
-     * Tn this method <>writeInTxt</> we write points surface in txt file: x - in 1st column, t - in 2d column,
+     * Tn this method (<>writeInTxt</>) we write points surface in txt file: x - in 1st column, t - in 2d column,
      * exact value of the func - 3d column and our func value in 4d column (for gnuplot)
      */
 
-    private static void writeInTxt(double[][] u) throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter("funcrig.txt");
+    private static void writeForGnuplot(double[][] u) throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter("HeatEquation//src//ru//nsu//mmf//g16121//ddt//main//functions_for_Gnuplot.txt");
 
         double x;
         double t = leftBound;
@@ -72,25 +67,79 @@ public class HeatEquations {
         writer.close();
     }
 
-    private static void writeErrorInTxt(double[][] u) throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter("error.txt");
+    private static void writeResultForPython(double[][] u) throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter("HeatEquation//src//ru//nsu//mmf//g16121//ddt//main//result.txt");
+
+        writer.print("[[" + (int)leftBound + ", " + (int)rightBound + ", " + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
+        writer.print("[" + (int)leftBound + ", " + (int)rightBound + ", " + (NUMBERS_COUNT_OF_GRID_BY_T + 1) + "],");
 
         double x;
         double t = leftBound;
+
+        for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; i++) {
+            x = leftBound;
+            writer.print("[");
+            for (int j = 0; j < NUMBERS_COUNT_OF_GRID_BY_X; j++) {
+                writer.print(u[i][j] + ",");
+                x += stepX;
+            }
+            writer.print(u[i][NUMBERS_COUNT_OF_GRID_BY_X]);
+            if (i == NUMBERS_COUNT_OF_GRID_BY_T) {
+                writer.print("]");
+            } else {
+                writer.print("],");
+            }
+            t += stepT;
+        }
+        writer.print("]");
+        writer.close();
+    }
+
+    private static void writeMainFuncForPython() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter("HeatEquation//src//ru//nsu//mmf//g16121//ddt//main//main_function_for_Python.txt");
+
+        writer.print("[[" + leftBound + "," + rightBound + "," + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
+        writer.print("[" + leftBound + "," + rightBound + "," + (NUMBERS_COUNT_OF_GRID_BY_T + 1) + "],");
+
+        double x;
+        double t = leftBound;
+
+        for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; i++) {
+            x = leftBound;
+            writer.print("[");
+            for (int j = 0; j <= NUMBERS_COUNT_OF_GRID_BY_X; j++) {
+                writer.print(u(x, t));
+                x += stepX;
+            }
+            writer.print("],");
+            t += stepT;
+        }
+        writer.print("]");
+        writer.close();
+    }
+
+    private static double maxError(double[][] u) {
+
+        double x = leftBound;
+        double t = leftBound;
+        double max = Math.abs(u[0][0] - u(x, t));
         for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; i++) {
             x = leftBound;
             for (int j = 0; j <= NUMBERS_COUNT_OF_GRID_BY_X; j++) {
-                writer.println(x + "\t" + t + "\t" + (u(x, t) - u[i][j]));
+                double error = Math.abs(u(x, t) - u[i][j]);
+                if (error > max) {
+                    max = error;
+                }
                 x += stepX;
             }
             t += stepT;
         }
-        writer.close();
+        return max;
     }
 
     /**
-     * Tn this method <>solveHeatEquation</> solve the heat equation solves
-     * the heat equation using the Euler method, with initial conditions (<></>, and
+     * Tn this method (<>solveHeatEquation</>) solve the heat equation solves
+     * the heat equation using the Euler method, with initial conditions, and
      * writes data to a text file to display the result.
      */
 
@@ -131,7 +180,9 @@ public class HeatEquations {
         }
 
         //write in the txt for display the result
-        writeInTxt(u);
-        writeErrorInTxt(u);
+        writeForGnuplot(u);
+        writeMainFuncForPython();
+        writeResultForPython(u);
+        System.out.println("Max error = " + maxError(u));
     }
 }

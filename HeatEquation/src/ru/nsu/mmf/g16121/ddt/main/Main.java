@@ -1,10 +1,15 @@
 package ru.nsu.mmf.g16121.ddt.main;
 
-import java.io.FileNotFoundException;
-
-import static ru.nsu.mmf.g16121.ddt.math.HeatEquations.solveHeatEquation;
+import ru.nsu.mmf.g16121.ddt.math.HeatEquations;
+import java.io.IOException;
 
 public class Main {
+    public static final double leftBound = 0;
+    public static final double rightBound = 1;
+
+    public static final int NUMBERS_COUNT_OF_GRID_BY_X = 5;
+    public static final int NUMBERS_COUNT_OF_GRID_BY_T = 5;
+
     public static final double COEFFICIENT_AT_SECOND_DERIVATIVE = 0.021;
 
     public static double f(double x, double t) {
@@ -28,7 +33,8 @@ public class Main {
         return -Math.pow(x, 4) + 2.0 * Math.pow(x, 2) + t * x + Math.pow(t, 2) - t * Math.exp(x);
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        solveHeatEquation();
+    public static void main(String[] args) throws IOException {
+        HeatEquations.solveHeatEquation();
+        //Runtime.getRuntime().exec("HeatEquation/src/ru/nsu/mmf/g16121/ddt/main/ -c python3 vizualization.py");
     }
 }
