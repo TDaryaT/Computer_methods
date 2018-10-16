@@ -7,17 +7,21 @@ import static ru.nsu.mmf.g16121.ddt.main.Main.*;
 
 public class HeatEquations {
 
-    private static final double stepX = (rightBound - leftBound) / NUMBERS_COUNT_OF_GRID_BY_X;
-    private static final double stepT = (rightBound - leftBound) / NUMBERS_COUNT_OF_GRID_BY_T;
+    private static final double stepX = (rightBound - leftBound) /
+            NUMBERS_COUNT_OF_GRID_BY_X;
+    private static final double stepT = (rightBound - leftBound) /
+            NUMBERS_COUNT_OF_GRID_BY_T;
 
     private static final double COURANT_NUMBER_ANALOGUE =
             2.0 * COEFFICIENT_AT_SECOND_DERIVATIVE * stepT / Math.pow(stepX, 2);
 
     /**
-     * @param rightPart - this is array of the right part of linear equation system Au = rightPart, where
-     *                  A is triDiagonal matrix with coeff:
+     * @param rightPart - this is array of the right part of linear equation
+     *                  system Au = rightPart, where A is triDiagonal matrix
+     *                  with coeff:
      *                  diag - is coefficient of the matrix A on the diagonal;
-     *                  overDiagonal - the coefficient of the matrix And the overdiagonal and subdiagonal;
+     *                  overDiagonal - the coefficient of the matrix And the
+     *                  overdiagonal and subdiagonal;
      *                  <p>
      * @return solution matrix of a linear system.
      */
@@ -36,10 +40,12 @@ public class HeatEquations {
 
         for (int i = rightPart.length - 3; i >= 0; i--) {
             alpha[i] = -(overDiagonal / (diag + overDiagonal * alpha[i + 1]));
-            beta[i] = ((rightPart[i + 1] - beta[i + 1] * overDiagonal) / (diag + overDiagonal * alpha[i + 1]));
+            beta[i] = ((rightPart[i + 1] - beta[i + 1] * overDiagonal) /
+                    (diag + overDiagonal * alpha[i + 1]));
         }
 
-        u[0] = ((rightPart[0] - overDiagonal * beta[0]) / (diag + overDiagonal * alpha[0]));
+        u[0] = ((rightPart[0] - overDiagonal * beta[0]) / (diag +
+                overDiagonal * alpha[0]));
         for (int i = 1; i < rightPart.length; i++) {
             u[i] = alpha[i - 1] * u[i - 1] + beta[i - 1];
         }
@@ -47,12 +53,14 @@ public class HeatEquations {
     }
 
     /**
-     * Tn this method (<>writeInTxt</>) we write points surface in txt file: x - in 1st column, t - in 2d column,
-     * exact value of the func - 3d column and our func value in 4d column (for gnuplot)
+     * Tn this method (<>writeInTxt</>) we write points surface in txt file:
+     * x - in 1st column, t - in 2d column,
+     * exact value of the func - 3d column and our func value in 4d column
+     * (for gnuplot)
      */
 
     private static void writeForGnuplot(double[][] u) throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter("HeatEquation//src//ru//nsu//mmf//g16121//ddt//main//functions_for_Gnuplot.txt");
+        PrintWriter writer = new PrintWriter("functions_for_Gnuplot.txt");
 
         double x;
         double t = leftBound;
@@ -68,14 +76,17 @@ public class HeatEquations {
     }
 
     private static void writeResultForPython(double[][] u) throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter("HeatEquation//src//ru//nsu//mmf//g16121//ddt//main//result.txt");
+        PrintWriter writer = new PrintWriter("result.txt");
 
-        writer.print("[[" + (int)leftBound + ", " + (int)rightBound + ", " + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
-        writer.print("[" + (int)leftBound + ", " + (int)rightBound + ", " + (NUMBERS_COUNT_OF_GRID_BY_T + 1) + "],");
+        writer.print("[[" + (int) leftBound + ", " + (int) rightBound
+                + ", " + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
+        writer.print("[" + (int) leftBound + ", " + (int) rightBound
+                + ", " + (NUMBERS_COUNT_OF_GRID_BY_T + 1) + "],");
 
         double x;
         double t = leftBound;
 
+        writer.print("[");
         for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; i++) {
             x = leftBound;
             writer.print("[");
@@ -91,30 +102,38 @@ public class HeatEquations {
             }
             t += stepT;
         }
-        writer.print("]");
+        writer.print("]]");
         writer.close();
     }
 
     private static void writeMainFuncForPython() throws FileNotFoundException {
-        PrintWriter writer = new PrintWriter("HeatEquation//src//ru//nsu//mmf//g16121//ddt//main//main_function_for_Python.txt");
+        PrintWriter writer = new PrintWriter("mainFunc.txt");
 
-        writer.print("[[" + leftBound + "," + rightBound + "," + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
-        writer.print("[" + leftBound + "," + rightBound + "," + (NUMBERS_COUNT_OF_GRID_BY_T + 1) + "],");
+        writer.print("[[" + (int) leftBound + ", " + (int) rightBound
+                + ", " + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
+        writer.print("[" + (int) leftBound + ", " + (int) rightBound
+                + ", " + (NUMBERS_COUNT_OF_GRID_BY_T + 1) + "],");
 
         double x;
         double t = leftBound;
 
+        writer.print("[");
         for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; i++) {
             x = leftBound;
             writer.print("[");
-            for (int j = 0; j <= NUMBERS_COUNT_OF_GRID_BY_X; j++) {
-                writer.print(u(x, t));
+            for (int j = 0; j < NUMBERS_COUNT_OF_GRID_BY_X; j++) {
+                writer.print(u(x, t) + ",");
                 x += stepX;
             }
-            writer.print("],");
+            writer.print(u(x, t));
+            if (i == NUMBERS_COUNT_OF_GRID_BY_T) {
+                writer.print("]");
+            } else {
+                writer.print("],");
+            }
             t += stepT;
         }
-        writer.print("]");
+        writer.print("]]");
         writer.close();
     }
 
@@ -144,7 +163,8 @@ public class HeatEquations {
      */
 
     public static void solveHeatEquation() throws FileNotFoundException {
-        double[][] u = new double[NUMBERS_COUNT_OF_GRID_BY_T + 1][NUMBERS_COUNT_OF_GRID_BY_X + 1];
+        double[][] u = new double[NUMBERS_COUNT_OF_GRID_BY_T + 1]
+                [NUMBERS_COUNT_OF_GRID_BY_X + 1];
 
         //The first row of the matrix is filled by the initial data.
         double x = leftBound;
@@ -171,7 +191,8 @@ public class HeatEquations {
                 x += stepX;
             }
             rightPart[0] += COURANT_NUMBER_ANALOGUE * 0.5 * mu1(t + stepT);
-            rightPart[NUMBERS_COUNT_OF_GRID_BY_X - 2] += COURANT_NUMBER_ANALOGUE * 0.5 * mu2(t + stepT);
+            rightPart[NUMBERS_COUNT_OF_GRID_BY_X - 2] += COURANT_NUMBER_ANALOGUE
+                    * 0.5 * mu2(t + stepT);
 
             //fill the rest of the matrix
             System.arraycopy(sweepMethodWithConstCoef(rightPart),
