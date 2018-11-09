@@ -39,7 +39,7 @@ surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm,
                        linewidth=1, antialiased=False)
 
 # Customize the z axis.
-ax.set_zlim(-1.01, 1.01)
+ax.set_zlim(1.01, 5.01)
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 

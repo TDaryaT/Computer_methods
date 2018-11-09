@@ -39,13 +39,14 @@ public class ConvectionEquation {
                 t += stepT;
             }
             writer.print("]]");
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private static void writeMainFuncForPython() {
-        try (PrintWriter writer = new PrintWriter("mainFunc.txt")) {
+    private static void writeMainFuncForPython(String fileName) {
+        try (PrintWriter writer = new PrintWriter(fileName)) {
 
             writer.print("[[" + (int) leftBound + ", " + (int) rightBound
                     + ", " + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
@@ -63,7 +64,7 @@ public class ConvectionEquation {
                     writer.print(u(x, t) + ",");
                     x += stepX;
                 }
-                writer.print(u(x, t));
+                writer.print(u(rightBound, t));
                 if (i == NUMBERS_COUNT_OF_GRID_BY_T) {
                     writer.print("]");
                 } else {
@@ -110,12 +111,28 @@ public class ConvectionEquation {
         //The first column are filled with source data
         double t = leftBound;
         for (int j = 0; j <= NUMBERS_COUNT_OF_GRID_BY_T; j++) {
-            u[j][0] = u0(t);
+//            u[j][0] = u0(t);
+            u[j][0] = u(0, j * stepT);
+            t += stepT;
+        }
+
+        t = leftBound + stepT;
+        for (int j = 0; j < NUMBERS_COUNT_OF_GRID_BY_T; ++j) {
+            x = leftBound;
+            for (int i = 1; i <= NUMBERS_COUNT_OF_GRID_BY_X; ++i) {
+                double currant = C(x, t) * stepT / stepX;
+                if (currant >= eps) {
+                    u[j + 1][i] = (u[j][i] + currant * u[j + 1][i - 1]) / (1 + currant);
+                } else {
+                    u[j + 1][i] = (u[j][i] - currant * u[j + 1][i - 1]) / (1 - currant);
+                }
+                x += stepX;
+            }
             t += stepT;
         }
 
         //write in the txt for display the result
-        writeMainFuncForPython();
+        writeMainFuncForPython("mainFunc.txt");
         writeResultForPython(u);
         System.out.println("Max error = " + maxError(u));
     }
