@@ -11,41 +11,21 @@ public class ConvectionEquation {
     private static final double stepT = (rightBound - leftBound) /
             NUMBERS_COUNT_OF_GRID_BY_T;
 
-    private static void writeResultForPython(double[][] u) {
-        try (PrintWriter writer = new PrintWriter("result.txt")) {
-
-            writer.print("[[" + (int) leftBound + ", " + (int) rightBound
-                    + ", " + (NUMBERS_COUNT_OF_GRID_BY_X + 1) + "],");
-            writer.print("[" + (int) leftBound + ", " + (int) rightBound
-                    + ", " + (NUMBERS_COUNT_OF_GRID_BY_T + 1) + "],");
-
-            double x;
-            double t = leftBound;
-
-            writer.print("[");
-            for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; i++) {
-                x = leftBound;
-                writer.print("[");
-                for (int j = 0; j < NUMBERS_COUNT_OF_GRID_BY_X; j++) {
-                    writer.print(u[i][j] + ",");
-                    x += stepX;
-                }
-                writer.print(u[i][NUMBERS_COUNT_OF_GRID_BY_X]);
-                if (i == NUMBERS_COUNT_OF_GRID_BY_T) {
-                    writer.print("]");
-                } else {
-                    writer.print("],");
-                }
-                t += stepT;
+    private static void writeForGnu(String fileName, double[][] u) {
+        //the value of x at which the graph will be built
+        double x = 0.5;
+        int j = (int) (x * NUMBERS_COUNT_OF_GRID_BY_X);
+        try (PrintWriter writer = new PrintWriter(fileName)) {
+            for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; ++i) {
+                writer.println(i * stepT + "\t" +
+                        u(x, i * stepT) + "\t" + u[i][j]);
             }
-            writer.print("]]");
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private static void writeMainFuncForPython(String fileName) {
+    private static void writeForPython(String fileName, double[][] u, boolean func) {
         try (PrintWriter writer = new PrintWriter(fileName)) {
 
             writer.print("[[" + (int) leftBound + ", " + (int) rightBound
@@ -61,10 +41,18 @@ public class ConvectionEquation {
                 x = leftBound;
                 writer.print("[");
                 for (int j = 0; j < NUMBERS_COUNT_OF_GRID_BY_X; j++) {
-                    writer.print(u(x, t) + ",");
+                    if (func) {
+                        writer.print(u(x, t) + ",");
+                    } else {
+                        writer.print(u[i][j] + ",");
+                    }
                     x += stepX;
                 }
-                writer.print(u(rightBound, t));
+                if (func) {
+                    writer.print(u(rightBound, t));
+                } else {
+                    writer.print(u[i][NUMBERS_COUNT_OF_GRID_BY_X]);
+                }
                 if (i == NUMBERS_COUNT_OF_GRID_BY_T) {
                     writer.print("]");
                 } else {
@@ -78,17 +66,16 @@ public class ConvectionEquation {
         }
     }
 
-    private static double maxError(double[][] u) {
+    private static double maxError(double[][] u, double[][] error) {
 
-        double x = leftBound;
         double t = leftBound;
-        double max = Math.abs(u[0][0] - u(x, t));
+        double max = 0;
         for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_T; i++) {
-            x = leftBound;
+            double x = leftBound;
             for (int j = 0; j <= NUMBERS_COUNT_OF_GRID_BY_X; j++) {
-                double error = Math.abs(u(x, t) - u[i][j]);
-                if (error > max) {
-                    max = error;
+                error[i][j] = Math.abs(u(x, t) - u[i][j]);
+                if (error[i][j] > max) {
+                    max = error[i][j];
                 }
                 x += stepX;
             }
@@ -97,43 +84,37 @@ public class ConvectionEquation {
         return max;
     }
 
-    public static void solveConvectionEquation() throws FileNotFoundException {
+    public static void solveConvectionEquation() {
         double[][] u = new double[NUMBERS_COUNT_OF_GRID_BY_T + 1]
                 [NUMBERS_COUNT_OF_GRID_BY_X + 1];
 
         //The first row of the matrix is filled by the initial data
-        double x = leftBound;
         for (int i = 0; i <= NUMBERS_COUNT_OF_GRID_BY_X; i++) {
-            u[0][i] = fi0(x);
-            x += stepX;
+            u[0][i] = fi0(i * stepX);
         }
 
         //The first column are filled with source data
-        double t = leftBound;
         for (int j = 0; j <= NUMBERS_COUNT_OF_GRID_BY_T; j++) {
-//            u[j][0] = u0(t);
-            u[j][0] = u(0, j * stepT);
-            t += stepT;
+            u[j][0] = u0(j * stepT);
         }
 
-        t = leftBound + stepT;
         for (int j = 0; j < NUMBERS_COUNT_OF_GRID_BY_T; ++j) {
-            x = leftBound;
             for (int i = 1; i <= NUMBERS_COUNT_OF_GRID_BY_X; ++i) {
-                double currant = C(x, t) * stepT / stepX;
+                double currant = C(i * stepX, j * stepT) * stepT / stepX;
                 if (currant >= eps) {
                     u[j + 1][i] = (u[j][i] + currant * u[j + 1][i - 1]) / (1 + currant);
                 } else {
                     u[j + 1][i] = (u[j][i] - currant * u[j + 1][i - 1]) / (1 - currant);
                 }
-                x += stepX;
             }
-            t += stepT;
         }
 
+        double[][] error = new double[NUMBERS_COUNT_OF_GRID_BY_T + 1][NUMBERS_COUNT_OF_GRID_BY_X + 1];
         //write in the txt for display the result
-        writeMainFuncForPython("mainFunc.txt");
-        writeResultForPython(u);
-        System.out.println("Max error = " + maxError(u));
+        writeForPython("mainFunc.txt", u, true);
+        writeForPython("result.txt", u, false);
+        System.out.println("Max error = " + maxError(u, error));
+        writeForGnu("forGnu.txt",u);
+//        writeForPython("error.txt", error, false);
     }
 }

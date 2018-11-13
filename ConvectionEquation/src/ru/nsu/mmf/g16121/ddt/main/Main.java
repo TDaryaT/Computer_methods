@@ -8,8 +8,8 @@ public class Main {
     public static final double leftBound = 0;
     public static final double rightBound = 1;
 
-    public static final int NUMBERS_COUNT_OF_GRID_BY_X = 30;
-    public static final int NUMBERS_COUNT_OF_GRID_BY_T = 60;
+    public static final int NUMBERS_COUNT_OF_GRID_BY_X = 10;
+    public static final int NUMBERS_COUNT_OF_GRID_BY_T = 10;
 
     public static final double eps = 0.1E-6;
 
@@ -18,7 +18,7 @@ public class Main {
     }
 
     public static double C(double x, double t) {
-        return 3.0 * Math.pow(t - 0.3, 3) /
+        return 3.0 * Math.pow(t - 0.3, 2) /
                 (2.0 * Math.PI - Math.PI * Math.sin(Math.PI * x));
     }
 
@@ -27,7 +27,7 @@ public class Main {
     }
 
     public static double u0(double t) {
-        return t;
+        return -Math.pow(t - 0.3, 3) + 1;
     }
 
     public static void main(String[] args) throws IOException {
@@ -35,5 +35,6 @@ public class Main {
 
         Runtime.getRuntime().exec("python3 vizualization.py");
         Runtime.getRuntime().exec("python3 vizualization2.py");
+//        Runtime.getRuntime().exec("python3 vizualization3.py");
     }
 }
