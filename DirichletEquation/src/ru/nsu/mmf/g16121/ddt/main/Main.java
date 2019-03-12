@@ -1,6 +1,6 @@
 package ru.nsu.mmf.g16121.ddt.main;
 
-import ru.nsu.mmf.g16121.ddt.math.DerihleEquation;
+import ru.nsu.mmf.g16121.ddt.math.DirichletEquation;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -28,25 +28,41 @@ public class Main {
     public static boolean isBorder(double x, double y) {
         return (x >= 0) && (y >= 0) && (x <= 1) && (y <= 1) &&
                 (((-x + 0.5) == y) || ((x + 0.5) == y) ||
-                        ((x + 1) == y) || ((x == 1) && (y <= 0.5)) ||
+                        ((-x + 1.5) == y) || ((x == 1) && (y <= 0.5)) ||
                         ((y == 0) && (x >= 0.5)));
     }
 
-    public static boolean isRigion(double x, double y) {
-        return (((-x + 0.5) > y) && ((x + 0.5) < y) &&
-                ((x + 1) <= y) && (x < 1) && (y > 0));
+    public static boolean isRegion(double x, double y) {
+        return (((-x + 0.5) < y) && ((x + 0.5) > y) &&
+                ((-x + 1.5) > y) && (x < 1) && (y > 0));
     }
 
     public static void main(String[] args) throws IOException {
-        int i = 0;
-        Scanner scanner = new Scanner(System.in);
+        int i = 1;
+        double x, y;
 
-        while (i != 1){
-
-        }
-//        DerihleEquation DE1 = new DerihleEquation();
-//        DE1.solveDerihleEquation();
+        //validation of the region
+//        Scanner scanner = new Scanner(System.in);
 //
-//        Runtime.getRuntime().exec("python3 vizualization.py");
+//        while (i != 0) {
+//            System.out.println("set coordinate of x: ");
+//            x = scanner.nextDouble();
+//            System.out.println("set coordinate of y: ");
+//            y = scanner.nextDouble();
+//
+//            if (isBorder(x, y)) {
+//                System.out.println("is Border");
+//            }
+//            if (isRegion(x, y)) {
+//                System.out.println("is Region");
+//            }
+//            System.out.println("continue?(1/0)");
+//            i = scanner.nextInt();
+//        }
+
+        DirichletEquation DE1 = new DirichletEquation();
+        DE1.solveDirichletEquation();
+
+        Runtime.getRuntime().exec("python3 vizualization.py");
     }
 }

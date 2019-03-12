@@ -8,8 +8,8 @@ public class Main {
     public static final double leftBound = 0;
     public static final double rightBound = 1;
 
-    public static final int NUMBERS_COUNT_OF_GRID_BY_X = 10;
-    public static final int NUMBERS_COUNT_OF_GRID_BY_T = 10;
+    public static final int NUMBERS_COUNT_OF_GRID_BY_X = 20;
+    public static final int NUMBERS_COUNT_OF_GRID_BY_T = 20;
 
     public static final double eps = 0.1E-6;
 
@@ -18,16 +18,15 @@ public class Main {
     }
 
     public static double C(double x, double t) {
-        return 3.0 * Math.pow(t - 0.3, 2) /
-                (2.0 * Math.PI - Math.PI * Math.sin(Math.PI * x));
+        return 4;
     }
 
     public static double fi0(double x) {
-        return Math.cos(Math.PI * x) + 0.027 + 2.0 * Math.PI * x;
+        return 3;
     }
 
     public static double u0(double t) {
-        return -Math.pow(t - 0.3, 3) + 1;
+        return 2;
     }
 
     public static void main(String[] args) throws IOException {

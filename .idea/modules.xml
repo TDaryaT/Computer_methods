@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Computers_methods.iml" filepath="$PROJECT_DIR$/Computers_methods.iml" />
       <module fileurl="file://$PROJECT_DIR$/ConvectionEquation/ConvectionEquation.iml" filepath="$PROJECT_DIR$/ConvectionEquation/ConvectionEquation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DirichletEquation/DirichletEquation.iml" filepath="$PROJECT_DIR$/DirichletEquation/DirichletEquation.iml" />
       <module fileurl="file://$PROJECT_DIR$/HeatEquation/HeatEquation.iml" filepath="$PROJECT_DIR$/HeatEquation/HeatEquation.iml" />
     </modules>
   </component>
