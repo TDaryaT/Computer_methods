@@ -3,32 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fdcdb009-2be5-492d-a9e4-9f78be501afa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Computer_methods" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/.report.tex.swp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/MaxError10-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/MaxError20-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/MaxError5-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/MaxError500-500.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/ex1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/for5-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/mainFunc10-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/mainFunc20-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/mainFunc5-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/mainFunc500-500.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/method.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/picture2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/picture3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/report.aux" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/report.bbl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/report.blg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/report.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/report.synctex.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/report.tex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/result10-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/result20-20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/result5-5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/result500-500.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConvectionEquation/forReport/task3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,10 +135,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="297" y="86" key="SettingsEditor" timestamp="1592417492125">
+    <state x="297" y="86" key="SettingsEditor" timestamp="1592556446685">
       <screen x="16" y="26" width="1584" height="850" />
     </state>
-    <state x="297" y="86" key="SettingsEditor/16.26.1584.850@16.26.1584.850" timestamp="1592417492125" />
+    <state x="297" y="86" key="SettingsEditor/16.26.1584.850@16.26.1584.850" timestamp="1592556446685" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
